@@ -110,9 +110,21 @@ canvas{max-height:260px;}
 
 /* REPORT */
 @media print {
-  body{background:white!important;color:#000!important;}
-  .no-print{display:none!important;}
-  .report-page{box-shadow:none!important;border:1px solid #ddd!important;}
+  body * { visibility: hidden !important; }
+  #reportPage, #reportPage * { visibility: visible !important; }
+  #reportPage {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 30px !important;
+    box-shadow: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    background: white !important;
+    color: #1a1a2e !important;
+  }
 }
 .report-container{display:none;}
 .report-page{background:white;color:#1a1a2e;max-width:800px;margin:0 auto;padding:40px;border-radius:12px;box-shadow:0 4px 40px rgba(0,0,0,0.3);}
@@ -179,9 +191,9 @@ table.report-table tr:hover td{background:#e0f2fe;}
 <!-- BUSCADOR -->
 <div class="tab-content" id="tab-buscador">
   <div class="chart-title" style="margin-bottom:6px;">Buscar Profesional DECE</div>
-  <div class="chart-subtitle" style="margin-bottom:16px;">Busca por AMIE, cédula, nombres o apellidos · Escribe el AMIE para generar reporte grupal</div>
+  <div class="chart-subtitle" style="margin-bottom:16px;">Busca por AMIE, cédula, nombres, apellidos o institución educativa · Escribe el AMIE para generar reporte grupal</div>
   <div class="search-box">
-    <input class="search-input" id="searchInput" type="text" placeholder="Ej: 09H05461 · ROMERO · JOHANNA · 0943505032..." autocomplete="off"/>
+    <input class="search-input" id="searchInput" type="text" placeholder="Ej: 09H05461 · ROMERO · JOHANNA · COTOPAXI · 0943505032..." autocomplete="off"/>
     <button class="btn secondary" onclick="clearSearch()">✕ Limpiar</button>
     <button class="btn" id="btnReporte" onclick="generarReporte()" style="display:none;background:var(--accent3);">📄 Generar Reporte</button>
   </div>
@@ -199,7 +211,7 @@ table.report-table tr:hover td{background:#e0f2fe;}
 </div>
 
 <!-- REPORTE IMPRIMIBLE -->
-<div class="report-container no-print" id="reportContainer">
+<div class="report-container" id="reportContainer">
   <div style="max-width:800px;margin:0 auto 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
     <span style="font-family:Syne,sans-serif;font-size:14px;font-weight:700;color:var(--accent);">Vista previa del reporte</span>
     <div style="display:flex;gap:8px;">
@@ -248,7 +260,8 @@ function doSearch(){
     d.ap.toLowerCase().includes(q)||
     d.no.toLowerCase().includes(q)||
     (d.ap+" "+d.no).toLowerCase().includes(q)||
-    (d.no+" "+d.ap).toLowerCase().includes(q)
+    (d.no+" "+d.ap).toLowerCase().includes(q)||
+    d.in.toLowerCase().includes(q)
   );
   
   // Mostrar botón reporte si búsqueda parece ser AMIE o hay múltiples resultados
